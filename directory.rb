@@ -13,11 +13,20 @@ def input_students
   #while the name is not empty, repeat this code
   while !name.empty? do
 
+    #asking for a cohort value
+    puts "Please specify which cohort the student will be joining: "
+    cohort = gets.chomp.capitalize
+
+    #asking if the student has a hobby
+    puts "Thanks! Does the student have any hobbies?"
+    hobbies = gets.chomp.capitalize
+
     #adds a student hash to the arrary
-    students << {name: name, cohort: :november}
+    students << {name: name, cohort: cohort, hobbies: hobbies}
     puts "Now we have #{students.count} students"
 
     #get another name from the user
+    puts "Enter another name or finalize by hitting return again: "
     name = gets.chomp.capitalize
   end
   students
@@ -34,7 +43,7 @@ end
 def print(students)
   counter = 0
   until counter == students.length
-    puts "#{counter + 1}. #{students[counter][:name]} (#{students[counter][:cohort]} cohort)"
+    puts "#{counter + 1}. #{students[counter][:name]} (#{students[counter][:cohort]} cohort)  Hobby: #{students[counter][:hobbies]}"
     counter += 1
   end
 end
