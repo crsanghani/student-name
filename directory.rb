@@ -32,10 +32,13 @@ end
 
 #iterating through the array to list student names
 def print(students)
-  students.each_with_index do |student, index|
-    puts "#{index+1}. #{student[:name]} (#{student[:cohort]} cohort)"
+  counter = 0
+  until counter == students.length
+    puts "#{counter + 1}. #{students[counter][:name]} (#{students[counter][:cohort]} cohort)"
+    counter += 1
   end
 end
+
 
 #print the total number of students
 def print_footer(names)
@@ -60,5 +63,4 @@ end
 students = input_students
 print_header
 print(students)
-sort_students_by_length(students)
 print_footer(students)
