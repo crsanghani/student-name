@@ -16,11 +16,16 @@ def input_students
   months = Date::MONTHNAMES.compact.map{|m| m.to_sym}
 
   #while the name is not empty, repeat this code
-  while !name.empty? do
+  while !name.empty?
 
     #asking for a cohort value
     puts "Please specify which cohort the student will be joining. (Full Months only e.g November): "
-    cohort = gets.chomp.capitalize
+    cohort = gets.chomp.capitalize.to_sym
+
+    #validates cohort value
+    if !months.include?(cohort) then
+      redo
+    end
 
     #asking if the student has a hobby
     puts "Thanks! Does the student have any hobbies?"
