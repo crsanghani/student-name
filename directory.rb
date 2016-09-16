@@ -49,9 +49,16 @@ def sort_students_by_letter(students)
   puts students_select
 end
 
+#shows the students that have less than 12 characters in their name
+def sort_students_by_length(students)
+  length = 12
+  students_select = students.select{|student| student[:name].length < 12}
+  puts students_select
+end
+
 #calling the methods
 students = input_students
 print_header
 print(students)
-sort_students_by_letter(students)
+sort_students_by_length(students)
 print_footer(students)
