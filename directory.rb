@@ -8,7 +8,7 @@ def input_students
   students = []
 
   #get the first name
-  name = gets.chomp
+  name = gets.chomp.capitalize
 
   #while the name is not empty, repeat this code
   while !name.empty? do
@@ -18,7 +18,7 @@ def input_students
     puts "Now we have #{students.count} students"
 
     #get another name from the user
-    name = gets.chomp
+    name = gets.chomp.capitalize
   end
   students
 end
@@ -42,8 +42,16 @@ def print_footer(names)
   puts "Overall, we have #{names.count} great students"
 end
 
+#shows the students that begin with a certain letter only
+def sort_students_by_letter(students)
+  letter = "V"
+  students_select = students.select{|student| student[:name][0] == letter}
+  puts students_select
+end
+
 #calling the methods
 students = input_students
 print_header
 print(students)
+sort_students_by_letter(students)
 print_footer(students)
