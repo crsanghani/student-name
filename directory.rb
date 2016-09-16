@@ -1,4 +1,6 @@
 
+require 'date'
+
 #get user input to generate a list of students
 def input_students
   puts "Please enter the names of the students"
@@ -10,11 +12,14 @@ def input_students
   #get the first name
   name = gets.chomp.capitalize
 
+  #Uses the MONTHNAMES constant in Date to create an array of month names, these are then converted to symbols
+  months = Date::MONTHNAMES.compact.map{|m| m.to_sym}
+
   #while the name is not empty, repeat this code
   while !name.empty? do
 
     #asking for a cohort value
-    puts "Please specify which cohort the student will be joining: "
+    puts "Please specify which cohort the student will be joining. (Full Months only e.g November): "
     cohort = gets.chomp.capitalize
 
     #asking if the student has a hobby
@@ -31,7 +36,6 @@ def input_students
   end
   students
 end
-
 
 #print the array of students
 def print_header
