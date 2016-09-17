@@ -7,7 +7,7 @@ def interactive_menu
 
   loop do
     print_menu
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
   end
 end
 
@@ -50,7 +50,7 @@ def input_students
   puts "To finish, just hit return twice"
 
   #get the first name without using chomp
-  name = gets.capitalize.delete! "\n"
+  name = STDIN.gets.capitalize.delete! "\n"
 
   #Uses the MONTHNAMES constant in Date to create an array of month names, these are then converted to symbols
   months = Date::MONTHNAMES.compact.map{|m| m.to_sym}
@@ -60,7 +60,7 @@ def input_students
 
     #asking for a cohort value
     puts "Please specify which cohort the student will be joining. (Full Months only e.g November): "
-    cohort = gets.chomp.capitalize.to_sym
+    cohort = STDIN.gets.chomp.capitalize.to_sym
 
     #validates cohort value
     if !months.include?(cohort)
@@ -70,7 +70,7 @@ def input_students
 
     #asking if the student has a hobby
     puts "Thanks! Does the student have any hobbies?"
-    hobbies = gets.chomp.capitalize
+    hobbies = STDIN.gets.chomp.capitalize.to_sym
 
     #adds a student hash to the arrary
     @students << {name: name, cohort: cohort, hobbies: hobbies}
@@ -78,7 +78,7 @@ def input_students
 
     #get another name from the user
     puts "Enter another name or finalize by hitting return again: "
-    name = gets.chomp.capitalize
+    name = STDIN.gets.chomp.capitalize
   end
   @students
 end
@@ -115,7 +115,7 @@ def cohort_print
   #this allows us to avoid printing an empty list if no students are added
   if @students.count > 0
     puts "Select which cohort you would like to see: ".center(20)
-    cohort = gets.chomp.capitalize.to_sym
+    cohort = STDIN.gets.chomp.capitalize.to_sym
     counter = 0
     #will print out the students that match the requested cohort
     @students.each do |student|
@@ -151,10 +151,10 @@ def sort_students_by_length
 end
 
 def save_students
-  #open the file so we can write to it
+#open the file so we can write to it
   file = File.open("students.csv", "w")
 
-  #iterate over the students array
+#iterate over the students array
   @students.each do |student|
     student_data = [student[:name],student[:cohort],student[:hobbies]]
     csv_line = student_data.join(",")
@@ -163,13 +163,35 @@ def save_students
   file.close
 end
 
-def load_students
-  file = File.open("students.csv", "r")
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
-  name, cohort = line.chomp.split(',')
+    name, cohort = line.chomp.split(',')
     @students << {name: name, cohort: cohort.to_sym}
   end
   file.close
+end
+
+def try_load_students
+
+  #first argument from the command line
+  filename = ARGV.first
+
+  #get out of method if it isn't given
+  return if filename.nil?
+
+  #checks to see if file exits
+  if File.exists?(filename)
+    load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}"
+
+  #if the file doesn't exist
+  else
+    puts "Sorry, #{filename} doesn't exist."
+
+    #quits the program
+    exit
+  end
 end
 
 #call the method to start the program
