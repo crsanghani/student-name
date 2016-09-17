@@ -80,8 +80,8 @@ def cohort_print(students)
 end
 
 #print the total number of students
-def print_footer(names)
-  puts "Overall, we have #{names.count} great students".center(20)
+def print_footer(students)
+  puts "Overall, we have #{students.count} great #{students.count > 1 ? "students" : "student"}".center(20)
   border
 end
 
@@ -102,5 +102,6 @@ end
 #calling the methods
 students = input_students
 print_header
-cohort_print(students)
+print(students)
+#cohort_print(students)
 print_footer(students)
