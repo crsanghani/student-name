@@ -56,26 +56,37 @@ end
 
 #iterating through the array to list student names
 def print(students)
-  counter = 0
-  until counter == students.length
-    puts "#{counter + 1}. #{students[counter][:name]} (#{students[counter][:cohort]} cohort)  Hobby: #{students[counter][:hobbies]}".center(20)
-    counter += 1
+
+  #this allows us to avoid printing an empty list if no students are added
+  if students.count > 0
+    counter = 0
+    until counter == students.length
+      puts "#{counter + 1}. #{students[counter][:name]} (#{students[counter][:cohort]} cohort)  Hobby: #{students[counter][:hobbies]}".center(20)
+      counter += 1
+    end
+    border
+  else
+    puts "No students were added, please re-run the program".center(20)
   end
-  border
 end
 
 #printing the students grouped by cohort
 def cohort_print(students)
-  puts "Select which cohort you would like to see: ".center(20)
-  cohort = gets.chomp.capitalize.to_sym
-  counter = 0
-  #will print out the students that match the requested cohort
-  students.each do |student|
-    if student[:cohort] == cohort
-      puts "#{counter + 1}. #{students[counter][:name]} (#{students[counter][:cohort]} cohort)  Hobby: #{students[counter][:hobbies]}".center(20)
+  #this allows us to avoid printing an empty list if no students are added
+  if students.count > 0
+    puts "Select which cohort you would like to see: ".center(20)
+    cohort = gets.chomp.capitalize.to_sym
+    counter = 0
+    #will print out the students that match the requested cohort
+    students.each do |student|
+      if student[:cohort] == cohort
+        puts "#{counter + 1}. #{students[counter][:name]} (#{students[counter][:cohort]} cohort)  Hobby: #{students[counter][:hobbies]}".center(20)
 
-      counter =+ 1
+        counter =+ 1
+      end
     end
+  else
+    puts "No students were added, please re-run the program".center(20)
   end
 end
 
