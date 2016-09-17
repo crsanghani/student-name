@@ -23,7 +23,8 @@ def input_students
     cohort = gets.chomp.capitalize.to_sym
 
     #validates cohort value
-    if !months.include?(cohort) then
+    if !months.include?(cohort)
+      puts "Sorry, that's not a valid input, please try again: "
       redo
     end
 
@@ -42,7 +43,7 @@ def input_students
   students
 end
 
-#print the array of students
+#prints the header
 def print_header
   puts "The students of Villains Academy".center(20)
   border
@@ -63,6 +64,20 @@ def print(students)
   border
 end
 
+#printing the students grouped by cohort
+def cohort_print(students)
+  puts "Select which cohort you would like to see: ".center(20)
+  cohort = gets.chomp.capitalize.to_sym
+  counter = 0
+  #will print out the students that match the requested cohort
+  students.each do |student|
+    if student[:cohort] == cohort
+      puts "#{counter + 1}. #{students[counter][:name]} (#{students[counter][:cohort]} cohort)  Hobby: #{students[counter][:hobbies]}".center(20)
+
+      counter =+ 1
+    end
+  end
+end
 
 #print the total number of students
 def print_footer(names)
@@ -87,5 +102,5 @@ end
 #calling the methods
 students = input_students
 print_header
-print(students)
+cohort_print(students)
 print_footer(students)
