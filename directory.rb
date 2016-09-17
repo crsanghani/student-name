@@ -73,7 +73,7 @@ def input_students
     hobbies = STDIN.gets.chomp.capitalize.to_sym
 
     #adds a student hash to the arrary
-    @students << {name: name, cohort: cohort, hobbies: hobbies}
+    add_student(name, cohort, hobbies)
     puts "Now we have #{@students.count} students"
 
     #get another name from the user
@@ -81,6 +81,10 @@ def input_students
     name = STDIN.gets.chomp.capitalize
   end
   @students
+end
+
+def add_student(name,cohort,hobbies)
+  @students << {name: name, cohort: cohort, hobbies: hobbies.to_sym}
 end
 
 #prints the header
@@ -166,8 +170,8 @@ end
 def load_students(filename = "students.csv")
   file = File.open(filename, "r")
   file.readlines.each do |line|
-    name, cohort = line.chomp.split(',')
-    @students << {name: name, cohort: cohort.to_sym}
+    name, cohort, hobbies = line.chomp.split(',')
+    add_student(name, cohort, hobbies)
   end
   file.close
 end
@@ -195,4 +199,5 @@ def try_load_students
 end
 
 #call the method to start the program
+try_load_students
 interactive_menu
