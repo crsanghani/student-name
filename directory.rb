@@ -9,8 +9,8 @@ def input_students
   #create an empty array
   students = []
 
-  #get the first name
-  name = gets.chomp.capitalize
+  #get the first name without using chomp
+  name = gets.capitalize.delete! "\n"
 
   #Uses the MONTHNAMES constant in Date to create an array of month names, these are then converted to symbols
   months = Date::MONTHNAMES.compact.map{|m| m.to_sym}
