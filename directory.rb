@@ -1,38 +1,47 @@
 
 require 'date'
 
+#set students here for program persistence
+@students = []
 def interactive_menu
-  #set students here for program persistence
-  students = []
-  loop do
-    puts "1. Input the students"
-    puts "2. Show the students"
-    puts "9. Exit"
 
-    selection = gets.chomp
-    #acts upon the selection
-    case selection
-      when "1"
-        students = input_students
-      when "2"
-        print_header
-        print(students)
-        print_footer(students)
-      when "9"
-        exit
-      else
-        puts "I don't know what you meant, try again"
-      end
+  loop do
+    print_menu
+    process(gets.chomp)
   end
 end
 
+#refactored some long code in to this method
+def print_menu
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "9. Exit"
+end
+
+#refactored some long code in to this method
+def show_students
+  print_header
+  print_students_list
+  print_footer
+end
+
+def process(selection)
+  #acts upon the selection
+  case selection
+    when "1"
+      input_students
+    when "2"
+      show_students
+    when "9"
+      exit
+    else
+      puts "I don't know what you meant, try again"
+    end
+end
 #get user input to generate a list of students
 def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
-
-  #create an empty array
-  students = []
 
   #get the first name without using chomp
   name = gets.capitalize.delete! "\n"
@@ -58,14 +67,14 @@ def input_students
     hobbies = gets.chomp.capitalize
 
     #adds a student hash to the arrary
-    students << {name: name, cohort: cohort, hobbies: hobbies}
-    puts "Now we have #{students.count} students"
+    @students << {name: name, cohort: cohort, hobbies: hobbies}
+    puts "Now we have #{@students.count} students"
 
     #get another name from the user
     puts "Enter another name or finalize by hitting return again: "
     name = gets.chomp.capitalize
   end
-  students
+  @students
 end
 
 #prints the header
@@ -80,13 +89,13 @@ def border
 end
 
 #iterating through the array to list student names
-def print(students)
+def print_students_list
 
   #this allows us to avoid printing an empty list if no students are added
-  if students.count > 0
+  if @students.count > 0
     counter = 0
-    until counter == students.length
-      puts "#{counter + 1}. #{students[counter][:name]} (#{students[counter][:cohort]} cohort)  Hobby: #{students[counter][:hobbies]}".center(20)
+    until counter == @students.length
+      puts "#{counter + 1}. #{@students[counter][:name]} (#{@students[counter][:cohort]} cohort)  Hobby: #{@students[counter][:hobbies]}".center(20)
       counter += 1
     end
     border
@@ -96,16 +105,16 @@ def print(students)
 end
 
 #printing the students grouped by cohort
-def cohort_print(students)
+def cohort_print
   #this allows us to avoid printing an empty list if no students are added
-  if students.count > 0
+  if @students.count > 0
     puts "Select which cohort you would like to see: ".center(20)
     cohort = gets.chomp.capitalize.to_sym
     counter = 0
     #will print out the students that match the requested cohort
-    students.each do |student|
-      if student[:cohort] == cohort
-        puts "#{counter + 1}. #{students[counter][:name]} (#{students[counter][:cohort]} cohort)  Hobby: #{students[counter][:hobbies]}".center(20)
+    @students.each do |student|
+      if @student[:cohort] == cohort
+        puts "#{counter + 1}. #{@students[counter][:name]} (#{@students[counter][:cohort]} cohort)  Hobby: #{@students[counter][:hobbies]}".center(20)
 
         counter =+ 1
       end
@@ -116,22 +125,22 @@ def cohort_print(students)
 end
 
 #print the total number of students
-def print_footer(students)
-  puts "Overall, we have #{students.count} great #{students.count > 1 ? "students" : "student"}".center(20)
+def print_footer
+  puts "Overall, we have #{@students.count} great #{@students.count > 1 ? "students" : "student"}".center(20)
   border
 end
 
 #shows the students that begin with a certain letter only
-def sort_students_by_letter(students)
+def sort_students_by_letter
   letter = "V"
-  students_select = students.select{|student| student[:name][0] == letter}
+  students_select = @students.select{|student| @student[:name][0] == letter}
   puts students_select.center(20)
 end
 
 #shows the students that have less than 12 characters in their name
-def sort_students_by_length(students)
+def sort_students_by_length
   length = 12
-  students_select = students.select{|student| student[:name].length < 12}
+  students_select = @students.select{|student| @student[:name].length < 12}
   puts students_select.center(20)
 end
 
