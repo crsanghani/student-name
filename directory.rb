@@ -182,15 +182,12 @@ def request_filename(selection)
 end
 
 def try_load_students
-  filename = ARGV.first #first argument from the command line
-  if filename.nil? then load_students  #get out of method if it isn't given
-  #checks to see if file exits98
-  elsif File.exists?(filename)
+  filename = ARGV.first                               #first argument from the command line
+  if filename.nil? then load_students                 #get out of method if it isn't given
+  elsif File.exists?(filename)                        #checks to see if file exists
     load_students(filename)
     puts "Loaded #{@students.count} from #{filename}"
-
-  #if the file doesn't exist
-  else
+  else                                                #if the file doesn't exist
     puts "Sorry, #{filename} doesn't exist."
     exit
   end
