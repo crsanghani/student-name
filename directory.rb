@@ -4,10 +4,10 @@ require 'date'
 #set students here for program persistence
 @students = []
 def interactive_menu
-
   loop do
     print_menu
     process(STDIN.gets.chomp)
+    case_selection_feedback
   end
 end
 
@@ -28,21 +28,22 @@ def show_students
 end
 
 def process(selection)
+  @selection = selection
   #acts upon the selection
   case selection
-    when "1"
-      input_students
-    when "2"
-      show_students
-    when "3"
-      save_students
-    when "4"
-      load_students
-    when "9"
-      exit
+    when "1" then input_students
+    when "2" then show_students
+    when "3" then save_students
+    when "4" then load_students
+    when "9" then exit
     else
       puts "I don't know what you meant, try again"
     end
+end
+
+#gives the user feedback about which choice they made in the selection process
+def case_selection_feedback
+  puts "You have selected #{@selection}"
 end
 #get user input to generate a list of students
 def input_students
@@ -100,7 +101,6 @@ end
 
 #iterating through the array to list student names
 def print_students_list
-
   #this allows us to avoid printing an empty list if no students are added
   if @students.count > 0
     counter = 0
@@ -125,7 +125,6 @@ def cohort_print
     @students.each do |student|
       if @student[:cohort] == cohort
         puts "#{counter + 1}. #{@students[counter][:name]} (#{@students[counter][:cohort]} cohort)  Hobby: #{@students[counter][:hobbies]}".center(20)
-
         counter =+ 1
       end
     end
@@ -167,7 +166,9 @@ def save_students
   file.close
 end
 
+#load students from a hardcoded value
 def load_students(filename = "students.csv")
+  #opens the file with a read parameter
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort, hobbies = line.chomp.split(',')
@@ -177,14 +178,11 @@ def load_students(filename = "students.csv")
 end
 
 def try_load_students
-
   #first argument from the command line
   filename = ARGV.first
-
   #get out of method if it isn't given
   if filename.nil? then load_students
-
-  #checks to see if file exits
+  #checks to see if file exits98
   elsif File.exists?(filename)
     load_students(filename)
     puts "Loaded #{@students.count} from #{filename}"
