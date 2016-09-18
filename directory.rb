@@ -167,12 +167,11 @@ end
 #load students from a hardcoded value
 def load_students(filename = "students.csv")
   #opens the file with a read parameter
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
+  file = File.open(filename, "r").readlines.each do |line|
     name, cohort, hobbies = line.chomp.split(',')
     add_student(name, cohort, hobbies)
   end
-  file.close
+  puts "You have successfully loaded students from a file."
 end
 
 def request_filename(selection)
