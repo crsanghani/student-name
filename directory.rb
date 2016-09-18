@@ -15,8 +15,8 @@ end
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from students.csv"
+  puts "3. Save the students to a file"
+  puts "4. Load the students from a file"
   puts "9. Exit"
 end
 
@@ -33,8 +33,8 @@ def process(selection)
   case selection
     when "1" then input_students
     when "2" then show_students
-    when "3" then save_students
-    when "4" then load_students
+    when "3" then request_filename(selection)
+    when "4" then request_filename(selection)
     when "9" then exit
     else
       puts "I don't know what you meant, try again"
@@ -45,17 +45,14 @@ end
 def case_selection_feedback
   puts "You have selected #{@selection}"
 end
+
 #get user input to generate a list of students
 def input_students
   puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
 
-  #get the first name without using chomp
-  name = STDIN.gets.capitalize.delete! "\n"
-
-  #Uses the MONTHNAMES constant in Date to create an array of month names, these are then converted to symbols
-  months = Date::MONTHNAMES.compact.map{|m| m.to_sym}
-
+  name = STDIN.gets.capitalize.delete! "\n"  #get the first name without using chomp
+  months = Date::MONTHNAMES.compact.map{|m| m.to_sym}#Uses the MONTHNAMES constant in Date to create an array of month names, these are then converted to symbols
   #while the name is not empty, repeat this code
   while !name.empty?
 
@@ -153,9 +150,9 @@ def sort_students_by_length
   puts students_select.center(20)
 end
 
-def save_students
+def save_students(filename = "students.csv")
 #open the file so we can write to it
-  file = File.open("students.csv", "w")
+  file = File.open(filename, "w")
 
 #iterate over the students array
   @students.each do |student|
@@ -164,6 +161,7 @@ def save_students
     file.puts csv_line
   end
   file.close
+  puts "The file has been saved"
 end
 
 #load students from a hardcoded value
@@ -177,11 +175,15 @@ def load_students(filename = "students.csv")
   file.close
 end
 
+def request_filename(selection)
+  puts "Please enter a filename: "
+  filename = STDIN.gets.chomp
+  selection == "3" ? save_students(filename) : load_students(filename)
+end
+
 def try_load_students
-  #first argument from the command line
-  filename = ARGV.first
-  #get out of method if it isn't given
-  if filename.nil? then load_students
+  filename = ARGV.first #first argument from the command line
+  if filename.nil? then load_students  #get out of method if it isn't given
   #checks to see if file exits98
   elsif File.exists?(filename)
     load_students(filename)
@@ -190,8 +192,6 @@ def try_load_students
   #if the file doesn't exist
   else
     puts "Sorry, #{filename} doesn't exist."
-
-    #quits the program
     exit
   end
 end
