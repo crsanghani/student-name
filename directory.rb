@@ -1,6 +1,6 @@
 
 require 'date'
-
+require 'csv'
 #set students here for program persistence
 @students = []
 def interactive_menu
@@ -151,25 +151,16 @@ def sort_students_by_length
 end
 
 def save_students(filename = "students.csv")
-#open the file so we can write to it
-  file = File.open(filename, "w")
-
-#iterate over the students array
-  @students.each do |student|
-    student_data = [student[:name],student[:cohort],student[:hobbies]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+  CSV.open(filename, "w") do |csv|                                                        #open the file so we can write to it
+    @students.each {|student| csv << [student[:name],student[:cohort],student[:hobbies]]} #iterate over the students array
   end
-  file.close
   puts "The file has been saved"
 end
 
-#load students from a hardcoded value
+#load students from a hardcoded value if the users filename isn't found
 def load_students(filename = "students.csv")
-  #opens the file with a read parameter
-  file = File.open(filename, "r").readlines.each do |line|
-    name, cohort, hobbies = line.chomp.split(',')
-    add_student(name, cohort, hobbies)
+  CSV.open(filename).read.each do |csv|
+    add_student(csv[0], csv[1], csv[2])
   end
   puts "You have successfully loaded students from a file."
 end
